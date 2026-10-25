@@ -29,4 +29,4 @@ jobs:
 
       - name: Toon gekozen env
         if: always()
-        run: echo "gekozen env: $ENVIRONMENT"
+        run: echo "gekozen env $ENVIRONMENT"
