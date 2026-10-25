@@ -1,0 +1,32 @@
+name: Conditional
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'kies env'
+        required: true
+        default: development
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Deploy naar productie
+        if: github.event.inputs.environment == 'production'
+        run: echo "Deploy to production"
+
+      - name: test mode
+        if: github.event.inputs.environment == 'development' || github.event.inputs.environment == 'staging'
+        run: echo "running in test mode"
+
+      - name: Toon gekozen env
+        if: always()
+        run: echo "gekozen env: $ENVIRONMENT"
