@@ -1,0 +1,19 @@
+name: Files
+
+on:
+  workflow_dispatch
+
+jobs:
+  files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Maak dir
+        run: mkdir mijn-map
+
+      - name: Schrijf een bestand
+        run: echo "hallo wereld " > mijn-map/hallo.txt
+
+      - name: toon de inhoud
+        run : |
+          ls -al mijn-map
+          cat mijn-map/hallo.txt
