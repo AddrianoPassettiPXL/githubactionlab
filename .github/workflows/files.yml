@@ -1,19 +1,20 @@
-name: Files
+name: exersice1
 
 on:
   workflow_dispatch
 
 jobs:
-  files:
+  FileManupelation:
     runs-on: ubuntu-latest
     steps:
-      - name: Maak dir
-        run: mkdir mijn-map
+      - name: maak dir
+        run: mkdir nieuwedir 
 
-      - name: Schrijf een bestand
-        run: echo "hallo wereld " > mijn-map/hallo.txt
+      - name: maak file en zet er iets in
+        run: |
+          cd nieuwedir
+          echo "hallo wereld" >> test.txt
 
-      - name: toon de inhoud
-        run : |
-          ls -al mijn-map
-          cat mijn-map/hallo.txt
+
+      - name: show inhoud
+        run: ls -la nieuwedir/

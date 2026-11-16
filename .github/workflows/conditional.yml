@@ -1,12 +1,12 @@
-name: Conditional
+
+name: conditional
 
 on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'kies env'
+        description: Welke environment?
         required: true
-        default: development
         type: choice
         options:
           - development
@@ -14,19 +14,20 @@ on:
           - production
 
 jobs:
-  deploy:
+  iftest:
     runs-on: ubuntu-latest
+
     env:
-      ENVIRONMENT: ${{ github.event.inputs.environment }}
+      INPUT: ${{ github.event.inputs.environment }}
+
     steps:
-      - name: Deploy naar productie
-        if: github.event.inputs.environment == 'production'
-        run: echo "Deploy to production"
+      - name: productie ja nee
+        if: env.INPUT == 'production'
+        run: echo "Deploying to production!"
 
-      - name: test mode
-        if: github.event.inputs.environment == 'development' || github.event.inputs.environment == 'staging'
-        run: echo "running in test mode"
+      - name: geen productie
+        if: env.INPUT == 'staging' || env.INPUT == 'development'
+        run: echo "Running in test mode"
 
-      - name: Toon gekozen env
-        if: always()
-        run: echo "gekozen env $ENVIRONMENT"
+      - name: run als laatste
+        run: echo "dit is de env $INPUT"
