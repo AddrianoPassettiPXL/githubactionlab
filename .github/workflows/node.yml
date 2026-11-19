@@ -1,0 +1,47 @@
+name: CI
+
+on:                                   # vraag 3: triggers
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  node:                               # job 1: bouwen
+    runs-on: ubuntu-latest            # vraag 4: runner
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4     # vraag 2: uses = kant-en-klare action
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:                         # with = parameters voor een uses
+          node-version: 20
+
+      - name: Install
+        run: npm install              # run = gewoon een commando
+
+      - name: Test
+        run: npm test                 # faalt dit → job stopt (vraag 1)
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4   # vraag 6: bewaren voor de VM gewist wordt
+        with:
+          name: app
+          path: dist/
+
+  deploy:                             # job 2: andere, verse VM!
+    needs: node                       # pas starten als 'node' groen is
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app                   # zelfde naam als bij de upload
+          path: dist/
+
+      - name: Toon bestanden
+        run: ls -R dist/
+
